@@ -1,12 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Raise Server Action upload limit (default is 1MB — phone photos exceed it)
-  serverActions: {
-    bodySizeLimit: "10mb",
-  },
   experimental: {
-    // Next 16 proxy layer also caps request bodies — keep in sync
+    // Default Server Action body limit is 1MB — too small for property photos
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+    // Next 16 proxy layer also caps bodies — keep in sync
     proxyClientMaxBodySize: "10mb",
   },
   images: {
