@@ -55,9 +55,9 @@ export default function Header() {
               solid ? "text-green" : "text-white"
             }`}
           >
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sand text-green text-sm font-extrabold">
+            {/* <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sand text-green text-sm font-extrabold">
               H
-            </span>
+            </span> */}
             Haven Realty
           </Link>
 

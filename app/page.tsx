@@ -1,6 +1,7 @@
 import FeaturedListings from "@/components/FeaturedListing";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import Testimonials from "@/components/Testimonial";
 import WhyChooseUs from "@/components/WhyChooseUs";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
           <FeaturedListings />
         </div>
         <WhyChooseUs />
+        <Testimonials />
       </main>
     </>
   );
