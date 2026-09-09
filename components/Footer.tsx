@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 const LISTING_LINKS = [
   { label: "Buy a home", href: "/listings?listing=sale" },

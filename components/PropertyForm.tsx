@@ -193,7 +193,7 @@ export default function PropertyForm({ property }: { property?: PropertyDefaults
           className="block w-full text-sm text-ink file:mr-4 file:rounded-full file:border-0 file:bg-sand-light file:px-4 file:py-2 file:text-sm file:font-semibold file:text-green"
         />
         <p className="mt-1 text-xs text-ink/50">
-          First image becomes the primary photo. JPEG, PNG, or WebP.
+          First image becomes the primary photo. JPEG, PNG, or WebP. Keep each image under about 4 MB (total upload under 10 MB).
         </p>
       </div>
 
