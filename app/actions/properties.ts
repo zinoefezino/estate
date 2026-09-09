@@ -1,4 +1,4 @@
-﻿"use server";
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -66,7 +66,14 @@ export async function createProperty(
   const error = validateFields(fields);
   if (error) return { error };
 
-  const uploaded = await uploadImagesFromFormData(formData);
+  let uploaded: string[] = [];
+  try {
+    uploaded = await uploadImagesFromFormData(formData);
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : "Image upload failed.",
+    };
+  }
   const existingUrls = formData
     .getAll("existingImages")
     .map((v) => String(v))
@@ -119,7 +126,14 @@ export async function updateProperty(
   const keepUrls = new Set(
     formData.getAll("keepImages").map((v) => String(v)).filter(Boolean)
   );
-  const uploaded = await uploadImagesFromFormData(formData);
+  let uploaded: string[] = [];
+  try {
+    uploaded = await uploadImagesFromFormData(formData);
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : "Image upload failed.",
+    };
+  }
 
   const toDelete = existing.images.filter((img) => !keepUrls.has(img.url));
   for (const img of toDelete) {

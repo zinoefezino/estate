@@ -1,9 +1,13 @@
-﻿import { put, del } from "@vercel/blob";
+import { put, del } from "@vercel/blob";
 import { mkdir, writeFile, unlink } from "fs/promises";
 import path from "path";
 
 function hasBlobToken(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN?.trim());
+}
+
+function isVercelRuntime(): boolean {
+  return process.env.VERCEL === "1";
 }
 
 function isBlobUrl(url: string): boolean {
@@ -22,9 +26,9 @@ function buildPathname(originalName: string): string {
 }
 
 /**
- * Upload a property image to Vercel Blob when BLOB_READ_WRITE_TOKEN is set,
- * otherwise save under public/uploads for local/dev.
- * Returns a public URL (https Blob URL or /uploads/...).
+ * Upload a property image to Vercel Blob when BLOB_READ_WRITE_TOKEN is set.
+ * Local/dev without a token falls back to public/uploads.
+ * On Vercel, filesystem writes are impossible — require the Blob token.
  */
 export async function uploadImage(file: File): Promise<string> {
   const pathname = buildPathname(file.name);
@@ -32,8 +36,15 @@ export async function uploadImage(file: File): Promise<string> {
   if (hasBlobToken()) {
     const blob = await put(pathname, file, {
       access: "public",
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
     return blob.url;
+  }
+
+  if (isVercelRuntime()) {
+    throw new Error(
+      "Image uploads require BLOB_READ_WRITE_TOKEN. Create a Vercel Blob store, connect it to this project, and redeploy."
+    );
   }
 
   const uploadDir = path.join(process.cwd(), "public", "uploads");
@@ -46,19 +57,20 @@ export async function uploadImage(file: File): Promise<string> {
 
 /**
  * Delete an image: Blob URLs via del() when token is present,
- * local /uploads/... files via unlink otherwise (and for leftover local paths).
+ * local /uploads/... files via unlink otherwise.
  */
 export async function deleteImage(url: string): Promise<void> {
-  if (hasBlobToken() && isBlobUrl(url)) {
+  if (isBlobUrl(url)) {
+    if (!hasBlobToken()) return;
     try {
-      await del(url);
+      await del(url, { token: process.env.BLOB_READ_WRITE_TOKEN });
     } catch {
       // ignore missing / already-deleted blobs
     }
     return;
   }
 
-  if (url.startsWith("/uploads/")) {
+  if (url.startsWith("/uploads/") && !isVercelRuntime()) {
     try {
       await unlink(path.join(process.cwd(), "public", url.replace(/^\//, "")));
     } catch {
