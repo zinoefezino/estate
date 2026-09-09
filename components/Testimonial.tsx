@@ -1,4 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
+﻿import { HugeiconsIcon } from "@hugeicons/react";
 import { QuoteUpIcon, StarIcon } from "@hugeicons/core-free-icons";
 
 type Testimonial = {

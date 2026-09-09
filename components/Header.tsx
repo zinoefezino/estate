@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -11,15 +11,17 @@ import {
 } from "@hugeicons/core-free-icons";
 
 const NAV_LINKS = [
-  { label: "Buy", href: "#" },
-  { label: "Rent", href: "#" },
-  { label: "Listings", href: "#" },
-  { label: "Agents", href: "#" },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
+  { label: "Buy", href: "/listings?listing=sale" },
+  { label: "Rent", href: "/listings?listing=rent" },
+  { label: "Listings", href: "/listings" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-export default function Header() {
+const PHONE_DISPLAY = "+234 000 000 0000";
+const PHONE_HREF = "tel:+2340000000000";
+
+export default function Header({ solid: solidProp = false }: { solid?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -37,7 +39,7 @@ export default function Header() {
     };
   }, [mobileOpen]);
 
-  const solid = scrolled || mobileOpen;
+  const solid = solidProp || scrolled || mobileOpen;
 
   return (
     <>
@@ -55,9 +57,6 @@ export default function Header() {
               solid ? "text-green" : "text-white"
             }`}
           >
-            {/* <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sand text-green text-sm font-extrabold">
-              H
-            </span> */}
             Haven Realty
           </Link>
 
@@ -77,20 +76,12 @@ export default function Header() {
 
           <div className="hidden items-center gap-6 lg:flex">
             <a
-              href="tel:+2340000000000"
-              className={`flex items-center gap-2 text-[15px] font-medium transition-colors ${
-                solid ? "text-ink" : "text-white"
-              }`}
+              href={PHONE_HREF}
+              className="inline-flex items-center gap-2 rounded-full bg-green px-5 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-green-light"
             >
               <HugeiconsIcon icon={Call02Icon} size={18} strokeWidth={2} />
-              +234 000 000 0000
+              {PHONE_DISPLAY}
             </a>
-            <Link
-              href="#"
-              className="rounded-full bg-green px-5 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-green-light"
-            >
-              List Your Property
-            </Link>
           </div>
 
           <button
@@ -106,7 +97,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile full-screen overlay */}
       <div
         className={`fixed inset-0 z-60 bg-cream transition-transform duration-300 lg:hidden ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
@@ -147,21 +137,14 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="px-6 py-6 border-t border-black/5 space-y-3">
+          <div className="px-6 py-6 border-t border-black/5">
             <a
-              href="tel:+2340000000000"
-              className="flex items-center justify-center gap-2 text-ink font-medium py-3"
+              href={PHONE_HREF}
+              className="flex items-center justify-center gap-2 rounded-full bg-green px-5 py-3.5 font-semibold text-white"
             >
-              <HugeiconsIcon icon={Call02Icon} size={18} />
-              +234 000 000 0000
+              <HugeiconsIcon icon={Call02Icon} size={18} strokeWidth={2} />
+              {PHONE_DISPLAY}
             </a>
-            <Link
-              href="#"
-              onClick={() => setMobileOpen(false)}
-              className="block text-center bg-green text-white px-5 py-3.5 rounded-full font-semibold"
-            >
-              List Your Property
-            </Link>
           </div>
         </div>
       </div>

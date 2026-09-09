@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# Haven Realty
+
+Next.js real-estate listings app (Haven Realty) with agent auth, Prisma, and property image uploads.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env
+# fill in DATABASE_URL, SESSION_SECRET, AGENT_EMAIL, AGENT_PASSWORD
+npx prisma migrate dev
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Property image uploads (Vercel Blob)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Images upload via `@vercel/blob` when `BLOB_READ_WRITE_TOKEN` is set. Without the token, uploads fall back to `public/uploads` (fine for local/dev).
 
-## Learn More
+### Create a Blob store and token
 
-To learn more about Next.js, take a look at the following resources:
+1. Open your project on [vercel.com](https://vercel.com) → **Storage**.
+2. Click **Create** / **Create Database** → choose **Blob**.
+3. Choose **Public** access (property photos are public URLs), name the store, and create it.
+4. Connect the store to this project if prompted. Vercel adds `BLOB_READ_WRITE_TOKEN` to the project’s environment variables automatically.
+5. For local development, either:
+   - Copy the token from the Blob store / project **Settings → Environment Variables** into your local `.env` as `BLOB_READ_WRITE_TOKEN`, or
+   - Run `vercel env pull` to sync env vars.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Redeploy after connecting Blob so production has the token. Local/static `/uploads/...` and site images under `public/` keep working either way.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Vercel environment variables
 
-## Deploy on Vercel
+Set these in the Vercel project (**Settings → Environment Variables**) before deploy:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `DATABASE_URL` — Neon Postgres connection string (include `?sslmode=require`)
+- `SESSION_SECRET` — long random secret (at least 32 chars)
+- `AGENT_EMAIL` / `AGENT_PASSWORD` — seed/login agent credentials
+- `BLOB_READ_WRITE_TOKEN` — from the connected Vercel Blob store (auto-added when you create/connect the store)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+After setting `DATABASE_URL`, run `npx prisma migrate deploy` (and optionally `npm run db:seed`) against Neon. Do not run migrate until `DATABASE_URL` points at Neon Postgres.

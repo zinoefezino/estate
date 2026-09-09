@@ -48,7 +48,7 @@ const STATS = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-green px-6 py-24 lg:px-10">
+    <section id="about" className="bg-green px-6 py-24 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:items-center">
           <div className="relative h-105 overflow-hidden rounded-2xl lg:h-120">
@@ -104,3 +104,4 @@ export default function WhyChooseUs() {
     </section>
   );
 }
+
