@@ -60,7 +60,7 @@ function SearchField({
         <input
           type="text"
           placeholder={placeholder}
-          className="w-full border-none bg-transparent p-0 text-[15px] text-ink placeholder:text-ink/40 focus:outline-none focus:ring-0"
+          className="w-full border-none bg-transparent p-0 text-base text-ink placeholder:text-ink/40 focus:outline-none focus:ring-0"
         />
       </div>
     </div>

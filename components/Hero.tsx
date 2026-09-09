@@ -6,7 +6,7 @@ export default function Hero() {
     <section className="relative flex min-h-[92vh] items-center">
       <div className="absolute inset-0 overflow-hidden">
         <Image
-          src="/hero.jpg"
+          src="/hero3.avif"
           alt="Modern home exterior"
           fill
           priority
