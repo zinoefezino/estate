@@ -12,7 +12,7 @@ type Testimonial = {
 const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
-    name: "Amara Chukwu",
+    name: "Alan Jones",
     location: "Bought in Lakeview, Austin",
     quote:
       "Our agent found us three homes that matched exactly what we asked for, then walked us through every step of closing. We had keys in under six weeks.",
@@ -20,7 +20,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: "2",
-    name: "David Okafor",
+    name: "Erlinda Martinez",
     location: "Sold in Bayside, Seattle",
     quote:
       "Haven priced our listing right the first time. We had two offers within a week and never had to drop the price once.",
