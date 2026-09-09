@@ -33,7 +33,7 @@ const STEPS = [
 
 export default function AgentConsultation() {
   return (
-    <section className="bg-cream px-6 py-24 lg:px-10">
+    <section className="bg-cream px-6 py-22 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
           <div>
