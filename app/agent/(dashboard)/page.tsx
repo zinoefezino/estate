@@ -41,11 +41,11 @@ export default async function AgentDashboardPage() {
   ];
 
   return (
-    <div className="space-y-10">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold text-green">Dashboard</h1>
-          <p className="mt-1 text-ink/60">Manage listings and buyer inquiries.</p>
+          <h1 className="text-2xl font-extrabold text-green sm:text-3xl">Dashboard</h1>
+          <p className="mt-0.5 text-ink/60">Manage listings and buyer inquiries.</p>
         </div>
         <Link
           href="/agent/properties/new"
@@ -55,18 +55,18 @@ export default async function AgentDashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="rounded-2xl bg-white p-5 shadow-sm shadow-black/5">
-            <div className="text-3xl font-extrabold text-green">{stat.value}</div>
-            <div className="mt-1 text-sm text-ink/60">{stat.label}</div>
+          <div key={stat.label} className="rounded-2xl bg-white p-4 shadow-sm shadow-black/5 lg:p-5">
+            <div className="text-2xl font-extrabold text-green lg:text-3xl">{stat.value}</div>
+            <div className="mt-0.5 text-sm text-ink/60">{stat.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <section className="rounded-2xl bg-white p-6 shadow-sm shadow-black/5">
-          <div className="mb-4 flex items-center justify-between">
+      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <section className="rounded-2xl bg-white p-5 shadow-sm shadow-black/5 sm:p-6">
+          <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-bold text-ink">Recent properties</h2>
             <Link href="/agent/properties" className="text-sm font-medium text-green">
               View all
@@ -74,7 +74,7 @@ export default async function AgentDashboardPage() {
           </div>
           <ul className="divide-y divide-ink/10">
             {recentProperties.map((p) => (
-              <li key={p.id} className="flex items-center justify-between py-3">
+              <li key={p.id} className="flex items-center justify-between py-2.5">
                 <div>
                   <Link
                     href={`/agent/properties/${p.id}/edit`}
@@ -89,13 +89,13 @@ export default async function AgentDashboardPage() {
               </li>
             ))}
             {recentProperties.length === 0 && (
-              <li className="py-6 text-sm text-ink/50">No properties yet.</li>
+              <li className="py-5 text-sm text-ink/50">No properties yet.</li>
             )}
           </ul>
         </section>
 
-        <section className="rounded-2xl bg-white p-6 shadow-sm shadow-black/5">
-          <div className="mb-4 flex items-center justify-between">
+        <section className="rounded-2xl bg-white p-5 shadow-sm shadow-black/5 sm:p-6">
+          <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-bold text-ink">Recent inquiries</h2>
             <Link href="/agent/inquiries" className="text-sm font-medium text-green">
               View all
@@ -103,7 +103,7 @@ export default async function AgentDashboardPage() {
           </div>
           <ul className="divide-y divide-ink/10">
             {recentInquiries.map((inq) => (
-              <li key={inq.id} className="py-3">
+              <li key={inq.id} className="py-2.5">
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-medium text-ink">
                     {inq.name}
@@ -121,7 +121,7 @@ export default async function AgentDashboardPage() {
               </li>
             ))}
             {recentInquiries.length === 0 && (
-              <li className="py-6 text-sm text-ink/50">No inquiries yet.</li>
+              <li className="py-5 text-sm text-ink/50">No inquiries yet.</li>
             )}
           </ul>
         </section>

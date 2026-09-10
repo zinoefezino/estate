@@ -17,10 +17,33 @@ export default function AgentNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-white/95 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <div className="flex h-14 items-center justify-between gap-3 sm:h-16">
-          <Link href="/agent" className="shrink-0 text-base font-bold text-green sm:text-lg">
-            Haven Agent
-          </Link>
+        <div className="flex h-14 items-center justify-between gap-3 sm:h-16 lg:gap-6">
+          <div className="flex min-w-0 items-center gap-6">
+            <Link href="/agent" className="shrink-0 text-base font-bold text-green sm:text-lg">
+              Haven Agent
+            </Link>
+
+            <nav className="hidden items-center gap-1 lg:flex">
+              {LINKS.map((link) => {
+                const active = link.exact
+                  ? pathname === link.href
+                  : pathname.startsWith(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                      active
+                        ? "bg-green text-white"
+                        : "text-ink/70 hover:bg-sand-light/60 hover:text-ink"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <Link
@@ -40,7 +63,7 @@ export default function AgentNav() {
           </div>
         </div>
 
-        <nav className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0 lg:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {LINKS.map((link) => {
             const active = link.exact
               ? pathname === link.href

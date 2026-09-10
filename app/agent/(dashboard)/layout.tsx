@@ -13,7 +13,7 @@ export default async function AgentDashboardLayout({
   return (
     <div className="min-h-screen bg-cream">
       <AgentNav />
-      <main className="mx-auto max-w-7xl px-6 py-10 lg:px-10">{children}</main>
+      <main className="mx-auto max-w-7xl px-6 py-6 lg:px-10 lg:py-8">{children}</main>
     </div>
   );
 }

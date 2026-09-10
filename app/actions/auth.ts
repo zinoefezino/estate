@@ -14,6 +14,11 @@ export type ChangePasswordState = {
   success?: boolean;
 };
 
+export type ChangeEmailState = {
+  error?: string;
+  success?: boolean;
+};
+
 export async function loginAction(
   _prev: AuthState,
   formData: FormData
@@ -88,4 +93,50 @@ export async function changePasswordAction(
   });
 
   return { success: true };
+}
+
+export async function changeEmailAction(
+  _prev: ChangeEmailState,
+  formData: FormData
+): Promise<ChangeEmailState> {
+  const auth = await requireAgent();
+  if (!auth) {
+    return { error: "You must be signed in to change your email." };
+  }
+
+  const newEmail = String(formData.get("newEmail") || "")
+    .trim()
+    .toLowerCase();
+  const currentPassword = String(formData.get("currentPassword") || "");
+
+  if (!newEmail || !currentPassword) {
+    return { error: "New email and current password are required." };
+  }
+
+  // Basic email format check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+    return { error: "Please enter a valid email address." };
+  }
+
+  if (newEmail === auth.agent.email.toLowerCase()) {
+    return { error: "That is already your current email." };
+  }
+
+  const valid = await bcrypt.compare(currentPassword, auth.agent.passwordHash);
+  if (!valid) {
+    return { error: "Current password is incorrect." };
+  }
+
+  const existing = await prisma.agent.findUnique({ where: { email: newEmail } });
+  if (existing && existing.id !== auth.agent.id) {
+    return { error: "That email is already in use by another agent." };
+  }
+
+  await prisma.agent.update({
+    where: { id: auth.agent.id },
+    data: { email: newEmail },
+  });
+
+  await destroySession();
+  redirect("/agent/login?emailChanged=1");
 }

@@ -1,6 +1,13 @@
 import LoginForm from "@/components/LoginForm";
 
-export default function AgentLoginPage() {
+export default async function AgentLoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ emailChanged?: string }>;
+}) {
+  const params = await searchParams;
+  const emailChanged = params.emailChanged === "1";
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-16">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm shadow-black/5">
@@ -13,6 +20,11 @@ export default function AgentLoginPage() {
             Sign in to manage listings and inquiries.
           </p>
         </div>
+        {emailChanged && (
+          <div className="mb-5 rounded-xl bg-green/10 px-4 py-3 text-sm text-green">
+            Email updated. Please sign in with your new email address.
+          </div>
+        )}
         <LoginForm />
       </div>
     </div>
