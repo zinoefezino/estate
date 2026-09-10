@@ -3,10 +3,15 @@
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { createSession, destroySession } from "@/lib/auth";
+import { createSession, destroySession, requireAgent } from "@/lib/auth";
 
 export type AuthState = {
   error?: string;
+};
+
+export type ChangePasswordState = {
+  error?: string;
+  success?: boolean;
 };
 
 export async function loginAction(
@@ -44,4 +49,43 @@ export async function loginAction(
 export async function logoutAction() {
   await destroySession();
   redirect("/agent/login");
+}
+
+export async function changePasswordAction(
+  _prev: ChangePasswordState,
+  formData: FormData
+): Promise<ChangePasswordState> {
+  const auth = await requireAgent();
+  if (!auth) {
+    return { error: "You must be signed in to change your password." };
+  }
+
+  const currentPassword = String(formData.get("currentPassword") || "");
+  const newPassword = String(formData.get("newPassword") || "");
+  const confirmPassword = String(formData.get("confirmPassword") || "");
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return { error: "All password fields are required." };
+  }
+
+  if (newPassword.length < 8) {
+    return { error: "New password must be at least 8 characters." };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return { error: "New password and confirmation do not match." };
+  }
+
+  const valid = await bcrypt.compare(currentPassword, auth.agent.passwordHash);
+  if (!valid) {
+    return { error: "Current password is incorrect." };
+  }
+
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  await prisma.agent.update({
+    where: { id: auth.agent.id },
+    data: { passwordHash },
+  });
+
+  return { success: true };
 }

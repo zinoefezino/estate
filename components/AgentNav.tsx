@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/agent", label: "Overview", exact: true },
   { href: "/agent/properties", label: "Properties" },
   { href: "/agent/inquiries", label: "Inquiries" },
+  { href: "/agent/settings", label: "Settings" },
 ];
 
 export default function AgentNav() {
